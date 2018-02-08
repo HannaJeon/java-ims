@@ -2,6 +2,7 @@ package codesquad.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,6 +11,7 @@ import codesquad.UnAuthorizedException;
 import codesquad.dto.UserDto;
 import support.domain.AbstractEntity;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +30,9 @@ public class User extends AbstractEntity {
     @Size(min = 3, max = 20)
     @Column(nullable = false, length = 20)
     private String name;
+
+    @OneToMany(mappedBy = "assignee")
+    private List<Issue> issueList;
 
     public User() {
     }
@@ -98,7 +103,11 @@ public class User extends AbstractEntity {
     public boolean isGuestUser() {
         return false;
     }
-    
+
+    public void setIssue(Issue issue) {
+        issueList.add(issue);
+    }
+
     private static class GuestUser extends User {
         @Override
         public boolean isGuestUser() {

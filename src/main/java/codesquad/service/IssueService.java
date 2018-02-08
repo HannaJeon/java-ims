@@ -19,6 +19,9 @@ public class IssueService {
 	@Resource(name = "milestoneRepository")
 	private MilestoneRepository milestoneRepository;
 
+	@Resource(name = "userRepository")
+	private UserRepository userRepository;
+
 	public Issue add(User loginUser, Issue issue) {
 		issue.writeBy(loginUser);
 		return issueRepository.save(issue);
@@ -51,5 +54,11 @@ public class IssueService {
 	public void addMilestone(long milestoneId, long issueId) {
 		Milestone milestone = milestoneRepository.findOne(milestoneId);
 		milestone.addIssue(issueRepository.findOne(issueId));
+	}
+
+	@Transactional
+	public Issue setAssignee(long issueId, long userId) {
+		User user = userRepository.findOne(userId);
+		return issueRepository.findOne(issueId).setAssignee(user);
 	}
 }

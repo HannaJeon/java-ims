@@ -46,6 +46,6 @@ public class AttachmentAcceptanceTest extends BasicAuthAcceptanceTest {
 		ResponseEntity<String> result = template.postForEntity("/attachments/issues/1", request, String.class);
 		assertEquals(HttpStatus.FOUND, result.getStatusCode());
 		assertNotNull(attachmentRepository.findOne(1L));
-		assertThat(attachmentRepository.findOne(1L).getFileName(), is("logback.xml"));
+		assertThat(attachmentRepository.findOne(1L).getPublicName(), is("logback.xml"));
 	}
 }

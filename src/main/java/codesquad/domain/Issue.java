@@ -2,6 +2,7 @@ package codesquad.domain;
 
 import codesquad.UnAuthenticationException;
 import codesquad.UnAuthorizedException;
+import codesquad.dto.IssueDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import support.domain.AbstractEntity;
@@ -30,6 +31,10 @@ public class Issue extends AbstractEntity {
 	@OneToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_issue_to_attachment"))
 	private Attachment attachment;
+
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_issue_to_assignee"))
+	private User assignee;
 
 	public Issue() {
 	}
@@ -95,6 +100,16 @@ public class Issue extends AbstractEntity {
 
 	public void toAttachment(Attachment attachment) {
 		this.attachment = attachment;
+	}
+
+	public Issue setAssignee(User user) {
+		user.setIssue(this);
+		this.assignee = user;
+		return this;
+	}
+
+	public User getAssignee() {
+		return assignee;
 	}
 
 	@Override
